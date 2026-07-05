@@ -18,6 +18,7 @@
         <th>Description</th>
         <th>Deadline</th>
         <th>Task type</th>
+        <th>Assignees</th>
         <th>Update</th>
         <th>Delete</th>
       </tr>
@@ -28,10 +29,21 @@
               {{ task.name }}
           </td>
           <td>
-              {{ task.description }}
+              {{ task.description|truncatechars:30 }}
           </td>
           <td>
               {{ task.deadline }}
+          </td>
+          <td>
+              {{ task.task_type }}
+          </td>
+          <td>
+            {% for worker in task.assignees.all %}
+              {{ worker.username }}
+            {% empty %}
+              <span style="color: red;">Not assignees</span>
+            {% endfor %}
+
           </td>
           <td>
               <a href="#">

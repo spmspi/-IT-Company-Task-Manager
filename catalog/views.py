@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 
 from catalog import models
+from catalog.forms import TaskCreateForm
 
 
 @login_required
@@ -35,7 +36,7 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
-    fields = "__all__"
+    form_class = TaskCreateForm
     template_name = "manager/task_form.html"
     success_url = reverse_lazy("catalog:task-list")
 

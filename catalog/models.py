@@ -3,7 +3,21 @@ from django.db import models
 
 
 class TaskType(models.Model):
-    name = models.CharField(max_length=255)
+    class TaskTypeChoices(models.TextChoices):
+        bug = "Bug", "Bug"
+        new_feature = "New_feature", "New feature"
+        breaking_change = "Breaking_change", "Breaking change"
+        refactoring = "Refactoring", "Refactoring"
+        QA = "QA", "QA"
+
+    name = models.CharField(
+        max_length=25,
+        choices=TaskTypeChoices.choices,
+        default=TaskTypeChoices.new_feature,
+    )
+    def __str__(self):
+        return self.name
+
 
 
 class Position(models.Model):
@@ -18,12 +32,26 @@ class Worker(AbstractUser):
         null=True,
         related_name="workers")
 
+    def __str__(self):
+        return self.username
+
 
 class Task(models.Model):
+    class PriorityChoices(models.TextChoices):
+        LOW = "LOW", "Low"
+        MEDIUM = "MEDIUM", "Medium"
+        HIGH = "HIGH", "High"
     name = models.CharField(max_length=255)
     description = models.TextField()
     deadline = models.DateTimeField()
     is_completed = models.BooleanField(default=False)
-    priority = models.TextChoices("Low", "Medium", "High")
+    priority = models.CharField(
+        max_length=10,
+        choices=PriorityChoices.choices,
+        default=PriorityChoices.MEDIUM,
+    )
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
-    assigness = models.ManyToManyField(Worker, related_name="assigned_tasks")
+    assignees = models.ManyToManyField(Worker, related_name="assigned_tasks")
+
+    def __str__(self):
+        return self.name
