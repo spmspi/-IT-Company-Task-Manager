@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 
-from catalog.models import Task
+from catalog.models import Task, Worker
 
 
 class TaskCreateForm(forms.ModelForm):
@@ -31,3 +32,14 @@ class TaskCreateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if self.instance and self.instance.deadline:
             self.fields['deadline'].initial = self.instance.deadline.strftime("%Y-%m-%dT%H:%M")
+
+
+class WorkerCreateForm(UserCreationForm):
+    class Meta:
+        model = Worker
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "position",
+            "email",
+        )

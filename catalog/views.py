@@ -1,6 +1,7 @@
+from django.contrib.auth.models import AbstractUser
 from django.views import generic
 from django.views.generic import DetailView, CreateView, UpdateView
-from .models import Task
+from .models import Task, Worker
 from django.urls import reverse_lazy
 
 from django.contrib.auth.decorators import login_required
@@ -8,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 
 from catalog import models
-from catalog.forms import TaskCreateForm
+from catalog.forms import TaskCreateForm, WorkerCreateForm
 
 
 @login_required
@@ -40,19 +41,33 @@ class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = "manager/task_form.html"
     success_url = reverse_lazy("catalog:task-list")
 
+class TaskDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Task
+    template_name = "manager/task_detail.html"
+
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
-    pass
+    model = Worker
+    context_object_name = "worker_list"
+    template_name = "manager/worker_list.html"
+    paginate_by = 10
 
-class TaskDetailView(LoginRequiredMixin, generic.DetailView):
-    pass
-
-class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
-    pass
+    def get_queryset(self):
+        username = self.request.GET.get("username")
+        if username:
+            return Worker.objects.filter(username__icontains=username)
+        return Worker.objects.all()
 
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
-    pass
+    model = Worker
+    form_class = WorkerCreateForm
+    template_name = "manager/worker_form.html"
+    success_url = reverse_lazy("catalog:worker-list")
+
+class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Worker
+    template_name = "manager/worker_detail.html"
 
 class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     pass

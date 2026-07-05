@@ -5,8 +5,8 @@ from django.db import models
 class TaskType(models.Model):
     class TaskTypeChoices(models.TextChoices):
         bug = "Bug", "Bug"
-        new_feature = "New_feature", "New feature"
-        breaking_change = "Breaking_change", "Breaking change"
+        new_feature = "New feature", "New feature"
+        breaking_change = "Breaking change", "Breaking change"
         refactoring = "Refactoring", "Refactoring"
         QA = "QA", "QA"
 
@@ -25,12 +25,19 @@ class Position(models.Model):
 
 
 class Worker(AbstractUser):
-    position = models.ForeignKey(
-        Position,
-        on_delete=models.CASCADE,
+    class PositionChoices(models.TextChoices):
+        DEVELOPER = "DEVELOPER", "Developer"
+        Project_Manager = "Project_Manager", "Project Manager"
+        QA = "QA", "QA"
+        Designer = "Designer", "Designer"
+        DevOPS = "DevOPS", "DevOPS"
+    position = models.CharField(
+        max_length=25,
+        choices=PositionChoices.choices,
         blank=True,
         null=True,
-        related_name="workers")
+        default=PositionChoices.DEVELOPER,
+    )
 
     def __str__(self):
         return self.username
