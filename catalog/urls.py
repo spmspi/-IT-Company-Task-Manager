@@ -7,9 +7,11 @@ from catalog.views import (
     TaskListView,
     TaskCreateView,
     TaskDetailView,
+    TaskDeleteView,
     WorkerListView,
     WorkerCreateView,
     WorkerDetailView,
+    WorkerDeleteView,
 )
 
 urlpatterns = [
@@ -25,6 +27,9 @@ urlpatterns = [
     path("task/<int:pk>/",
          TaskDetailView.as_view(),
          name="task-detail"),
+    path("task/<int:pk>/delete/",
+         TaskDeleteView.as_view(),
+         name="task-delete"),
     path("worker/",
          WorkerListView.as_view(),
          name="worker-list"),
@@ -36,6 +41,9 @@ urlpatterns = [
     path("worker/<int:pk>/",
          WorkerDetailView.as_view(),
          name="worker-detail"),
+    path("worker/<int:pk>/delete/",
+         WorkerDeleteView.as_view(),
+         name="worker-delete"),
 
 ]
 
