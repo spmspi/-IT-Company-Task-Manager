@@ -2,12 +2,11 @@
 
 {% block content %}
   <h1>
-    {{ task.model }}
+    {{ task.name }}
     <a href="{% url 'catalog:task-delete' pk=task.id %}" class="btn btn-danger link-to-page">
       Delete
     </a>
-
-    <a href="#" class="btn btn-secondary link-to-page">
+    <a href="{% url 'catalog:task-update' pk=task.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
   </h1>
@@ -27,7 +26,7 @@
   </h1>
   <hr>
   <ul>
-    {% for assignees in task.assigned_tasks.all %}
+    {% for assignees in task.assignees.all %}
       <li>{{ assignees.username }} ({{ assignees.first_name }} {{ assignees.last_name }})</li>
     {% endfor %}
   </ul>

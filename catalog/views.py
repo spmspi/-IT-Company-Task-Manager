@@ -20,12 +20,12 @@ def index(request):
         "num_tasks": num_tasks,
         "num_workers": num_workers,
     }
-    return render(request, "manager/index.html", context=context)
+    return render(request, "catalog/index.html", context=context)
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     context_object_name = "task_list"
-    template_name = "manager/task_list.html"
+
     paginate_by = 10
 
     def get_queryset(self):
@@ -38,23 +38,29 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
     form_class = TaskCreateForm
-    template_name = "manager/task_form.html"
+    template_name = "catalog/task_form.html"
     success_url = reverse_lazy("catalog:task-list")
 
 class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Task
     success_url = reverse_lazy("catalog:task-list")
-    template_name = "manager/task_confirm_delete.html"
+    template_name = "catalog/task_confirm_delete.html"
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
-    template_name = "manager/task_detail.html"
+    template_name = "catalog/task_detail.html"
+
+class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Task
+    template_name = "catalog/task_form.html"
+    form_class = TaskCreateForm
+    success_url = reverse_lazy("catalog:task-list")
 
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
     context_object_name = "worker_list"
-    template_name = "manager/worker_list.html"
+    template_name = "catalog/worker_list.html"
     paginate_by = 10
 
     def get_queryset(self):
@@ -67,20 +73,20 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
     model = Worker
     form_class = WorkerCreateForm
-    template_name = "manager/worker_form.html"
+    template_name = "catalog/worker_form.html"
     success_url = reverse_lazy("catalog:worker-list")
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
-    template_name = "manager/worker_detail.html"
+    template_name = "catalog/worker_detail.html"
 
 class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Worker
     success_url = reverse_lazy("catalog:worker-list")
-    template_name = "manager/worker_confirm_delete.html"
-
-class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
-    pass
+    template_name = "catalog/worker_confirm_delete.html"
 
 class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
-    pass
+    model = Worker
+    fields = ["username", "first_name", "last_name", "email", "position"]
+    template_name = "catalog/worker_form.html"
+    success_url = reverse_lazy("catalog:worker-list")
