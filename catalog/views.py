@@ -1,12 +1,12 @@
 from django.contrib.auth.models import AbstractUser
-from django.views import generic
+from django.views import generic, View
 from django.views.generic import DetailView, CreateView, UpdateView
 from .models import Task, Worker
 from django.urls import reverse_lazy
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 
 from catalog import models
 from catalog.forms import TaskCreateForm, WorkerCreateForm
@@ -25,8 +25,15 @@ def index(request):
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     context_object_name = "task_list"
-
     paginate_by = 10
+
+    def get_context_data(self, *, object_list=..., **kwargs):
+        context = super(TaskListView, self).get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["search_forms"] = SearchTaskForm(
+            initial={"name": name}
+        )
+        return context
 
     def get_queryset(self):
         name = self.request.GET.get("name")
@@ -90,3 +97,28 @@ class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     fields = ["username", "first_name", "last_name", "email", "position"]
     template_name = "catalog/worker_form.html"
     success_url = reverse_lazy("catalog:worker-list")
+
+class TaskWorkerToggle(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        task = Task.objects.get(pk=pk)
+        current_worker = request.user
+        if current_worker in task.assignees.all():
+            task.assignees.remove(current_worker)
+        else:
+            task.assignees.add(current_worker)
+        return redirect("catalog:task-detail", pk=pk)
+
+class MyTaskListView(LoginRequiredMixin, generic.ListView):
+    model = Task
+    paginate_by = 10
+    context_object_name = "my_task_list"
+    template_name = "catalog/my_task_list.html"
+    def get_queryset(self):
+        return Task.objects.filter(assignees=self.request.user)
+
+class TaskToggleCompleteView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        task = get_object_or_404(Task, pk=pk)
+        task.is_completed = not task.is_completed
+        task.save()
+        return redirect('catalog:my-task-list')

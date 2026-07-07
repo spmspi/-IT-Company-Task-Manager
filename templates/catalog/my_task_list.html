@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+    <h1>My task List</h1>
+  <form method="get" action="" class="form-inline">
+    {{ search_forms|crispy }}
+    <input class="btn btn-secondary" type="submit" value="👁️">
+  </form>
+  <a href="{% url 'catalog:task-create' %}" class="btn btn-primary link-to-page">
+      Create
+    </a>
+
+  {% if my_task_list %}
+    <table class="table">
+      <tr>
+        <th>Done</th><th>Name</th>
+        <th>Description</th>
+        <th>Deadline</th>
+        <th>Task type</th>
+        <th>Assignees</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+
+      {% for task in my_task_list %}
+        <tr>
+          <td>
+            <form method="post" action="{% url 'catalog:task-toggle-complete' pk=task.id %}">
+              {% csrf_token %}
+              <input type="checkbox"
+                     class="form-check-input"
+                     onChange="this.form.submit()"
+                     {% if task.is_completed %}checked{% endif %}>
+            </form>
+          </td>
+          <td><a href="{% url "catalog:task-detail" pk=task.id %} ">{{ task.name }}</a>
+          </td>
+          <td>
+              {{ task.description|truncatechars:30 }}
+          </td>
+          <td>
+            {% if task.is_past_deadline %}
+              <span class="badge bg-secondary">Overdue</span>
+              <div class="text-muted text-decoration-line-through">{{ task.deadline }}</div>
+            {% elif task.is_urgent %}
+              <span class="badge bg-danger animate-pulse">Hurry up! &lt; 1 hour left</span>
+              <div class="text-danger fw-bold">{{ task.deadline }}</div>
+            {% else %}
+              {{ task.deadline }}
+            {% endif %}
+          </td>
+          <td>
+              {{ task.task_type }}
+          </td>
+          <td>
+            {% for worker in task.assignees.all %}
+              {{ worker.username }}
+            {% empty %}
+              <span style="color: red;">Not assignees</span>
+            {% endfor %}
+          </td>
+          <td>
+              <a href="{% url 'catalog:task-update' pk=task.id %}">
+                Update
+              </a>
+            </td>
+            <td>
+              <a style="color: red"
+                href="{% url 'catalog:task-delete' pk=task.id %}">
+                Delete
+              </a>
+            </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+      <p>There are no task in the manager.</p>
+  {% endif %}
+{% endblock %}

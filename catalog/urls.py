@@ -14,6 +14,9 @@ from catalog.views import (
     WorkerDetailView,
     WorkerDeleteView,
     WorkerUpdateView,
+    TaskWorkerToggle,
+    MyTaskListView,
+    TaskToggleCompleteView,
 )
 
 urlpatterns = [
@@ -52,6 +55,15 @@ urlpatterns = [
     path("worker/<int:pk>/update/",
          WorkerUpdateView.as_view(),
          name="worker-update"),
+    path("task/<int:pk>/TaskWorkerToggle/",
+         TaskWorkerToggle.as_view(),
+         name="task-worker-toggle"),
+    path("my-task/",
+         MyTaskListView.as_view(),
+         name="my-task-list"),
+    path("tasks/<int:pk>/toggle-complete/",
+         TaskToggleCompleteView.as_view(),
+         name="task-toggle-complete"),
 
 ]
 
