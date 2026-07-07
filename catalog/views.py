@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 
 from catalog import models
-from catalog.forms import TaskCreateForm, WorkerCreateForm
+from catalog.forms import TaskCreateForm, WorkerCreateForm, SearchTaskForm, SearchWorkerForm
 
 
 @login_required
@@ -69,6 +69,14 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
     context_object_name = "worker_list"
     template_name = "catalog/worker_list.html"
     paginate_by = 10
+
+    def get_context_data(self, *, object_list=..., **kwargs):
+        context = super(WorkerListView, self).get_context_data(**kwargs)
+        username = self.request.GET.get("username", "")
+        context["search_forms"] = SearchWorkerForm(
+            initial={"username": username}
+        )
+        return context
 
     def get_queryset(self):
         username = self.request.GET.get("username")

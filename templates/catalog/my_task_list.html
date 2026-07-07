@@ -3,10 +3,6 @@
 
 {% block content %}
     <h1>My task List</h1>
-  <form method="get" action="" class="form-inline">
-    {{ search_forms|crispy }}
-    <input class="btn btn-secondary" type="submit" value="👁️">
-  </form>
   <a href="{% url 'catalog:task-create' %}" class="btn btn-primary link-to-page">
       Create
     </a>
