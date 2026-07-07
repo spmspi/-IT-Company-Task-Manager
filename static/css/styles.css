@@ -6,3 +6,15 @@ body {
     float: right;
     margin: 0 2px 0 2px;
 }
+
+.task-card {
+    background-color: antiquewhite !important;
+    margin: 5px !important;
+
+}
+
+.task-grid {
+    padding: 5px !important;
+    gap: 10px;
+
+}

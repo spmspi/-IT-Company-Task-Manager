@@ -129,4 +129,4 @@ class TaskToggleCompleteView(LoginRequiredMixin, View):
         task = get_object_or_404(Task, pk=pk)
         task.is_completed = not task.is_completed
         task.save()
-        return redirect('catalog:my-task-list')
+        return redirect("catalog:my-task-list")

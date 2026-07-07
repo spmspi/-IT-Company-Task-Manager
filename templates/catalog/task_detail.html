@@ -26,18 +26,17 @@
   </h3>
   <hr>
   <ul>
-    {% for assignees in task.assignees.all %}
-      <div class="row row-cols-1 row-cols-md-5 g-6">
-
-      <div class="col">
-        <div class="card h-100 p-3" style="aspect-ratio: 1 / 1;">
-          <h5>Username: {{ assignees.username }} </h5>
-          <p>Name: {{ assignees.first_name }} {{ assignees.last_name }}</p>
-          <p>Email: {{ assignees.email }}</p>
-          <p>Position: {{ assignees.position }}</p>
-          <p>Last login: {{ assignees.last_login }}</p>
+    <div class="row row-cols-1 row-cols-md-4 g-5 task-grid">
+      {% for assignees in task.assignees.all %}
+        <div class="col">
+        <div class="card h-100 p-3 task-card" style="aspect-ratio: 1 / 1;">
+            <h5>Username: {{ assignees.username }} </h5>
+            <p>Name: {{ assignees.first_name }} {{ assignees.last_name }}</p>
+            <p>Email: {{ assignees.email }}</p>
+            <p>Position: {{ assignees.position }}</p>
+            <p>Last login: {{ assignees.last_login }}</p>
+          </div>
         </div>
-      </div>
-    {% endfor %}
-  </ul>
+      {% endfor %}
+    </ul>
 {% endblock %}
