@@ -1,3 +1,5 @@
+from multiprocessing import context
+
 from django.contrib.auth.models import AbstractUser
 from django.views import generic, View
 from django.views.generic import DetailView, CreateView, UpdateView
@@ -16,9 +18,13 @@ from catalog.forms import TaskCreateForm, WorkerCreateForm, SearchTaskForm, Sear
 def index(request):
     num_tasks = models.Task.objects.all().count()
     num_workers = models.Worker.objects.all().count()
+    active_tasks = models.Task.objects.filter(is_completed=False).count()
+    complete_tasks = models.Task.objects.filter(is_completed=True).count()
     context = {
         "num_tasks": num_tasks,
         "num_workers": num_workers,
+        "active_tasks": active_tasks,
+        "complete_tasks": complete_tasks,
     }
     return render(request, "catalog/index.html", context=context)
 
@@ -94,6 +100,13 @@ class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
     template_name = "catalog/worker_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        worker = self.get_object()
+        context["complete_task"] = worker.assigned_tasks.filter(is_completed=True)
+        context["active_task"] = worker.assigned_tasks.filter(is_completed=False)
+        return context
 
 class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Worker

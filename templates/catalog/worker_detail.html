@@ -14,19 +14,31 @@
 
   <p><strong>First name:</strong> {{ worker.first_name }}</p>
   <p><strong>Last name:</strong> {{ worker.last_name }}</p>
-  <p><strong>Position:</strong> {{ worker.license_number }}</p>
+  <p><strong>Position:</strong> {{ worker.position }}</p>
 
   <div class="ml-3">
-    <h4>Tasks</h4>
+    <h4>All tasks in worker</h4>
   <div class="row row-cols-1 row-cols-md-5 g-6 task-grid">
     {% for task in worker.assigned_tasks.all %}
       <div class="col">
-        <div class="card h-100 p-3 task-card" style="aspect-ratio: 1 / 1;">
+        <div class="card h-150 p-3 task-card" style="aspect-ratio: 1 / 1;">
+          <a href="{% url "catalog:task-detail" pk=task.id %} " style="color: black">
           <h5><strong>Name task:</strong> {{ task.name }} </h5>
-          <p><strong>Assignees:</strong> {{ task.assigned_tasks.username }}</p>
+          <p><strong>Assignees:</strong>
+          {% for user in task.assignees.all %}
+            {{ user.username }}{% if not forloop.last %}, {% endif %}
+          {% empty %}
+            <span class="text-muted">No assignees</span>
+          {% endfor %}</p>
           <p><strong>DeadLine:</strong> {{ task.deadline }}</p>
           <p><strong>Priority:</strong> {{ task.priority }}</p>
-          <p><strong>Id:</strong> {{task.id}}</p>
+          {% if task.is_completed == True %}
+          <p><strong>Status:</strong> Completed task</p>
+          {% else %}
+          <p><strong>Status:</strong>Active task</p>
+          {% endif %}
+          <p><strong>Id:</strong>{{task.id}}</p>
+          </a>
         </div>
       </div>
     {% empty %}

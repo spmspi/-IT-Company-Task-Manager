@@ -45,6 +45,14 @@ class Worker(AbstractUser):
     def __str__(self):
         return self.username
 
+    @property
+    def active_tasks(self):
+        return self.assigned_tasks.filter(is_completed=False)
+
+    @property
+    def completed_tasks(self):
+        return self.assigned_tasks.filter(is_completed=True)
+
 
 class Task(models.Model):
     class PriorityChoices(models.TextChoices):
