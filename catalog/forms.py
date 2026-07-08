@@ -13,17 +13,17 @@ class TaskCreateForm(forms.ModelForm):
 
     class Meta:
         model = Task
-        fields = ["name",
-                  "task_type",
-                  "description",
-                  "priority",
-                  "deadline",
-                  "assignees",
-                  ]
+        fields = [
+            "name",
+            "task_type",
+            "description",
+            "priority",
+            "deadline",
+            "assignees",
+        ]
         widgets = {
             "deadline": forms.DateTimeInput(
-                attrs={"type": "datetime-local",
-                       "class": "form-control"},
+                attrs={"type": "datetime-local", "class": "form-control"},
                 format="%Y-%m-%dT%H:%M",
             )
         }
@@ -31,7 +31,9 @@ class TaskCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance and self.instance.deadline:
-            self.fields['deadline'].initial = self.instance.deadline.strftime("%Y-%m-%dT%H:%M")
+            self.fields["deadline"].initial = self.instance.deadline.strftime(
+                "%Y-%m-%dT%H:%M"
+            )
 
 
 class WorkerCreateForm(UserCreationForm):
@@ -50,11 +52,7 @@ class SearchTaskForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": "Search by task name"
-            }
-        ),
+        widget=forms.TextInput(attrs={"placeholder": "Search by task name"}),
     )
 
 
@@ -63,9 +61,5 @@ class SearchWorkerForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": "Search by worker username"
-            }
-        ),
+        widget=forms.TextInput(attrs={"placeholder": "Search by worker username"}),
     )

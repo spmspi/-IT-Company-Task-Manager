@@ -18,13 +18,15 @@ class TaskType(models.Model):
         choices=TaskTypeChoices.choices,
         default=TaskTypeChoices.new_feature,
     )
+
     def __str__(self):
         return self.name
 
 
-
 class Position(models.Model):
-    name = models.CharField(max_length=255,)
+    name = models.CharField(
+        max_length=255,
+    )
 
 
 class Worker(AbstractUser):
@@ -34,6 +36,7 @@ class Worker(AbstractUser):
         QA = "QA", "QA"
         Designer = "Designer", "Designer"
         DevOPS = "DevOPS", "DevOPS"
+
     position = models.CharField(
         max_length=25,
         choices=PositionChoices.choices,
@@ -59,6 +62,7 @@ class Task(models.Model):
         LOW = "LOW", "Low"
         MEDIUM = "MEDIUM", "Medium"
         HIGH = "HIGH", "High"
+
     name = models.CharField(max_length=255)
     description = models.TextField()
     deadline = models.DateTimeField()
@@ -81,4 +85,3 @@ class Task(models.Model):
         if self.deadline > now and self.deadline <= time_limit:
             return True
         return False
-
