@@ -1,23 +1,22 @@
-<ul class="sidebar-nav list-group">
+<ul class="navbar-nav ms-auto">
   {% if user.is_authenticated %}
-    <li class="list-group-item">User: <a href="{{ user.get_absolute_url }}">{{ user.get_username }}</a></li>
+    <li class="nav-item">
+      <span class="nav-link">User: <strong>{{ user.get_username }}</strong></span>
+    </li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'catalog:index' %}">Home</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'catalog:worker-list' %}">All workers</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'catalog:task-list' %}">All tasks</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'catalog:my-task-list' %}">My tasks</a></li>
 
-    <li class="list-group-item">
+    <li class="nav-item">
       <form action="{% url 'logout' %}" method="post" class="d-inline">
         {% csrf_token %}
-        <button type="submit" class="btn btn-link p-0 m-0 text-decoration-none text-dark" style="font-size: inherit; vertical-align: baseline;">
+        <button type="submit" class="btn btn-link nav-link text-decoration-none d-inline p-0 ms-lg-3" style="vertical-align: baseline;">
           Logout
         </button>
       </form>
     </li>
   {% else %}
-    <li class="list-group-item"><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'login'%}?next={{request.path}}">Login</a></li>
   {% endif %}
-
-  <br>
-
-  <li class="list-group-item"><a href="{% url 'catalog:index' %}">Home</a></li>
-  <li class="list-group-item"><a href="{% url 'catalog:worker-list' %}">All workers</a></li>
-  <li class="list-group-item"><a href="{% url 'catalog:task-list' %}">All task</a></li>
-  <li class="list-group-item"><a href="{% url 'catalog:my-task-list' %}">My task</a></li>
 </ul>

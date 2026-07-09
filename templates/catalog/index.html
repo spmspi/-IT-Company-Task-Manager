@@ -1,10 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
   <h1>Information</h1>
-  <p1>number of tasks: {{ num_tasks }}</p1>
-  <p1>number of workers: {{ num_workers }}</p1>
-  <p1>Completed task: {{ complete_tasks }}</p1>
-  <p1>Active task: {{ active_tasks }}</p1>
-
+  <p>number of tasks: {{ num_tasks }}</p>
+  <p>number of workers: {{ num_workers }}</p>
+  <p>Completed task: {{ complete_tasks }}</p>
+  <p>Active task: {{ active_tasks }}</p>
 {% endblock %}

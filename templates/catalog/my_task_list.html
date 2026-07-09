@@ -2,76 +2,86 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-    <h1>My task List</h1>
-  <a href="{% url 'catalog:task-create' %}" class="btn btn-primary link-to-page">
-      Create
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">My task List</h1>
+    <a href="{% url 'catalog:task-create' %}" class="btn btn-primary">
+      <i class="fas fa-plus me-1"></i> Create
     </a>
+  </div>
 
   {% if my_task_list %}
-    <table class="table">
-      <tr>
-        <th>Done</th><th>Name</th>
-        <th>Description</th>
-        <th>Deadline</th>
-        <th>Task type</th>
-        <th>Assignees</th>
-        <th>Update</th>
-        <th>Delete</th>
-      </tr>
-
-      {% for task in my_task_list %}
-        <tr>
-          <td>
-            <form method="post" action="{% url 'catalog:task-toggle-complete' pk=task.id %}">
-              {% csrf_token %}
-              <input type="checkbox"
-                     class="form-check-input"
-                     onChange="this.form.submit()"
-                     {% if task.is_completed %}checked{% endif %}>
-            </form>
-          </td>
-          <td><a href="{% url "catalog:task-detail" pk=task.id %} ">{{ task.name }}</a>
-          </td>
-          <td>
-              {{ task.description|truncatechars:30 }}
-          </td>
-          <td>
-            {% if task.is_past_deadline %}
-              <span class="badge bg-secondary">Overdue</span>
-              <div class="text-muted text-decoration-line-through">{{ task.deadline }}</div>
-            {% elif task.is_urgent %}
-              <span class="badge bg-danger animate-pulse">Hurry up! &lt; 1 hour left</span>
-              <div class="text-danger fw-bold">{{ task.deadline }}</div>
-            {% else %}
-              {{ task.deadline }}
-            {% endif %}
-          </td>
-          <td>
-              {{ task.task_type }}
-          </td>
-          <td>
-            {% for worker in task.assignees.all %}
-              {{ worker.username }}
-            {% empty %}
-              <span style="color: red;">Not assignees</span>
+    <div class="card shadow-sm">
+      <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th class="ps-3">Done</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Deadline</th>
+              <th>Task type</th>
+              <th>Assignees</th>
+              <th class="text-end pe-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in my_task_list %}
+              <tr>
+                <td class="ps-3">
+                  <form method="post" action="{% url 'catalog:task-toggle-complete' pk=task.id %}">
+                    {% csrf_token %}
+                    <input type="checkbox"
+                           class="form-check-input"
+                           onChange="this.form.submit()"
+                           {% if task.is_completed %}checked{% endif %}>
+                  </form>
+                </td>
+                <td>
+                  <a href="{% url 'catalog:task-detail' pk=task.id %}" class="fw-semibold text-decoration-none">
+                    {{ task.name }}
+                  </a>
+                </td>
+                <td class="text-muted">
+                  {{ task.description|truncatechars:30 }}
+                </td>
+                <td>
+                  {% if task.is_past_deadline %}
+                    <span class="badge bg-secondary">Overdue</span>
+                    <div class="text-muted text-decoration-line-through small">{{ task.deadline }}</div>
+                  {% elif task.is_urgent %}
+                    <span class="badge bg-danger">Hurry up! &lt; 1 hour left</span>
+                    <div class="text-danger fw-bold small">{{ task.deadline }}</div>
+                  {% else %}
+                    {{ task.deadline }}
+                  {% endif %}
+                </td>
+                <td>
+                  <span class="badge bg-info text-dark">{{ task.task_type }}</span>
+                </td>
+                <td>
+                  {% for worker in task.assignees.all %}
+                    <span class="badge bg-light text-dark border">{{ worker.username }}</span>
+                  {% empty %}
+                    <span class="badge bg-danger-subtle text-danger">Not assigned</span>
+                  {% endfor %}
+                </td>
+                <td class="text-end pe-3">
+                  <a href="{% url 'catalog:task-update' pk=task.id %}" class="btn btn-sm btn-outline-secondary">
+                    Update
+                  </a>
+                  <a href="{% url 'catalog:task-delete' pk=task.id %}" class="btn btn-sm btn-outline-danger">
+                    Delete
+                  </a>
+                </td>
+              </tr>
             {% endfor %}
-          </td>
-          <td>
-              <a href="{% url 'catalog:task-update' pk=task.id %}">
-                Update
-              </a>
-            </td>
-            <td>
-              <a style="color: red"
-                href="{% url 'catalog:task-delete' pk=task.id %}">
-                Delete
-              </a>
-            </td>
-        </tr>
-      {% endfor %}
-    </table>
-
+          </tbody>
+        </table>
+      </div>
+    </div>
   {% else %}
-      <p>There are no task in the manager.</p>
+    <div class="alert alert-light border text-center py-4">
+      There are no tasks in the manager.
+    </div>
   {% endif %}
-{% endblock %}
+{% endblock %}}

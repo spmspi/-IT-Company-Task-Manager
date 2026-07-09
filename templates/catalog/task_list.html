@@ -2,64 +2,79 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-    <h1>Task List</h1>
-  <form method="get" action="" class="form-inline">
-    {{ search_forms|crispy }}
-    <input class="btn btn-secondary" type="submit" value="👁️">
-  </form>
-  <a href="{% url 'catalog:task-create' %}" class="btn btn-primary link-to-page">
-      Create
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Task List</h1>
+    <a href="{% url 'catalog:task-create' %}" class="btn btn-primary">
+      <i class="fas fa-plus me-1"></i> Create
     </a>
+  </div>
+
+  <form method="get" action="" class="d-flex mb-4" style="max-width: 400px;">
+    <div class="input-group">
+      {{ search_forms|crispy }}
+      <button class="btn btn-sm btn-outline-secondary" type="submit">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+  </form>
 
   {% if task_list %}
-    <table class="table">
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Deadline</th>
-        <th>Task type</th>
-        <th>Assignees</th>
-        <th>Update</th>
-        <th>Delete</th>
-      </tr>
-
-      {% for task in task_list %}
-        <tr>
-          <td><a href="{% url "catalog:task-detail" pk=task.id %} ">{{ task.name }}</a>
-          </td>
-          <td>
-              {{ task.description|truncatechars:30 }}
-          </td>
-          <td>
-              {{ task.deadline }}
-          </td>
-          <td>
-              {{ task.task_type }}
-          </td>
-          <td>
-            {% for worker in task.assignees.all %}
-              {{ worker.username }}
-            {% empty %}
-              <span style="color: red;">Not assignees</span>
+    <div class="card shadow-sm">
+      <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th class="ps-3">Name</th>
+              <th>Description</th>
+              <th>Deadline</th>
+              <th>Task type</th>
+              <th>Assignees</th>
+              <th class="text-end pe-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in task_list %}
+              <tr>
+                <td class="ps-3">
+                  <a href="{% url 'catalog:task-detail' pk=task.id %}" class="fw-semibold text-decoration-none">
+                    {{ task.name }}
+                  </a>
+                </td>
+                <td class="text-muted">
+                  {{ task.description|truncatechars:30 }}
+                </td>
+                <td>
+                  {{ task.deadline }}
+                </td>
+                <td>
+                  <span class="badge bg-info text-dark">{{ task.task_type }}</span>
+                </td>
+                <td>
+                  {% for worker in task.assignees.all %}
+                    <span class="badge bg-light text-dark border">{{ worker.username }}</span>
+                  {% empty %}
+                    <span class="badge bg-danger-subtle text-danger">Not assigned</span>
+                  {% endfor %}
+                </td>
+                <td class="text-end pe-3">
+                  <a href="{% url 'catalog:task-update' pk=task.id %}" class="btn btn-sm btn-outline-secondary">
+                    Update
+                  </a>
+                  <a href="{% url 'catalog:task-delete' pk=task.id %}"
+                     class="btn btn-sm btn-outline-danger"
+                     onclick="return confirm('Delete this task?')">
+                    Delete
+                  </a>
+                </td>
+              </tr>
             {% endfor %}
-
-          </td>
-          <td>
-              <a href="{% url 'catalog:task-update' pk=task.id %}">
-                Update
-              </a>
-            </td>
-            <td>
-              <a style="color: red"
-                href="{% url 'catalog:task-delete' pk=task.id %}">
-                Delete
-              </a>
-            </td>
-        </tr>
-      {% endfor %}
-    </table>
-
+          </tbody>
+        </table>
+      </div>
+    </div>
   {% else %}
-      <p>There are no task in the manager.</p>
+    <div class="alert alert-light border text-center py-4">
+      There are no tasks in the manager.
+    </div>
   {% endif %}
 {% endblock %}
