@@ -1,49 +1,76 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    Username: {{ worker.username }}
-    <a href="{% url 'catalog:worker-delete' pk=worker.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">{{ worker.username }}</h1>
+    <div>
+      <a href="{% url 'catalog:worker-update' pk=worker.id %}" class="btn btn-outline-secondary">
+        Update
+      </a>
+      <a href="{% url 'catalog:worker-delete' pk=worker.id %}"
+         class="btn btn-outline-danger">
+        Delete
+      </a>
+    </div>
+  </div>
 
-    <a href="{% url 'catalog:worker-update' pk=worker.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <p class="mb-2"><strong>First name:</strong> {{ worker.first_name }}</p>
+      <p class="mb-2"><strong>Last name:</strong> {{ worker.last_name }}</p>
+      <p class="mb-0"><strong>Position:</strong>
+        <span class="badge bg-light text-dark border">{{ worker.position }}</span>
+      </p>
+    </div>
+  </div>
 
-  <p><strong>First name:</strong> {{ worker.first_name }}</p>
-  <p><strong>Last name:</strong> {{ worker.last_name }}</p>
-  <p><strong>Position:</strong> {{ worker.position }}</p>
+  <h4 class="mb-3">All tasks assigned to this worker</h4>
 
-  <div class="ml-3">
-    <h4>All tasks in worker</h4>
-  <div class="row row-cols-1 row-cols-md-5 g-6 task-grid">
+  <div class="row row-cols-1 row-cols-md-3 g-3">
     {% for task in worker.assigned_tasks.all %}
       <div class="col">
-        <div class="card h-150 p-3 task-card" style="aspect-ratio: 1 / 1;">
-          <a href="{% url "catalog:task-detail" pk=task.id %} " style="color: black">
-          <h5><strong>Name task:</strong> {{ task.name }} </h5>
-          <p><strong>Assignees:</strong>
-          {% for user in task.assignees.all %}
-            {{ user.username }}{% if not forloop.last %}, {% endif %}
-          {% empty %}
-            <span class="text-muted">No assignees</span>
-          {% endfor %}</p>
-          <p><strong>DeadLine:</strong> {{ task.deadline }}</p>
-          <p><strong>Priority:</strong> {{ task.priority }}</p>
-          {% if task.is_completed == True %}
-          <p><strong>Status:</strong> Completed task</p>
-          {% else %}
-          <p><strong>Status:</strong>Active task</p>
-          {% endif %}
-          <p><strong>Id:</strong>{{task.id}}</p>
-          </a>
-        </div>
+        <a href="{% url 'catalog:task-detail' pk=task.id %}" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm task-card">
+            <div class="card-body">
+              <h5 class="card-title">{{ task.name }}</h5>
+
+              <p class="mb-2">
+                <strong>Assignees:</strong>
+                {% for user in task.assignees.all %}
+                  <span class="badge bg-light text-dark border">{{ user.username }}</span>
+                {% empty %}
+                  <span class="text-muted">No assignees</span>
+                {% endfor %}
+              </p>
+
+              <p class="mb-1 small text-muted">Deadline: {{ task.deadline }}</p>
+              <p class="mb-2 small text-muted">Priority: {{ task.priority }}</p>
+
+              {% if task.is_completed %}
+                <span class="badge bg-success">Completed</span>
+              {% else %}
+                <span class="badge bg-warning text-dark">Active</span>
+              {% endif %}
+
+              <p class="mb-0 mt-2 small text-muted">#{{ task.id }}</p>
+            </div>
+          </div>
+        </a>
       </div>
     {% empty %}
-      <p>No task!</p>
+      <p class="text-muted">No tasks assigned.</p>
     {% endfor %}
   </div>
 {% endblock %}
 
+{% block extra_head %}
+<style>
+  .task-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .task-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.12) !important;
+  }
+</style>
+{% endblock %}

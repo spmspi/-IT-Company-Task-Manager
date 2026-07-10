@@ -1,52 +1,66 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ task.name }}
-    <a href="{% url 'catalog:task-delete' pk=task.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
-    <a href="{% url 'catalog:task-update' pk=task.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
-  <h4>Information this task:</h4>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">{{ task.name }}</h1>
     <div>
-      <p>Task deadline: {{ task.deadline }}</p>
-      <p>Task description: {{ task.description }}</p>
-      {% if task.is_completed == True %}
-        <p>Status: Completed task</p>
-      {% else %}
-        <p>Status: Active task</p>
-      {% endif %}
+      <a href="{% url 'catalog:task-update' pk=task.id %}" class="btn btn-outline-secondary">
+        Update
+      </a>
+      <a href="{% url 'catalog:task-delete' pk=task.id %}"
+         class="btn btn-outline-danger">
+        Delete
+      </a>
     </div>
-  <h3>
-    Assignees
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <p class="mb-2"><strong>Deadline:</strong> {{ task.deadline }}</p>
+      <p class="mb-2"><strong>Description:</strong> {{ task.description }}</p>
+      <p class="mb-0">
+        <strong>Status:</strong>
+        {% if task.is_completed %}
+          <span class="badge bg-success">Completed</span>
+        {% else %}
+          <span class="badge bg-warning text-dark">Active</span>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Assignees</h4>
     {% if task in user.assigned_tasks.all %}
-      <a href="{% url 'catalog:task-worker-toggle' pk=task.id %}" class="btn btn-danger link-to-page">
-        Delete me from this task
+      <a href="{% url 'catalog:task-worker-toggle' pk=task.id %}" class="btn btn-sm btn-outline-danger">
+        Remove me from this task
       </a>
     {% else %}
-      <a href="{% url 'catalog:task-worker-toggle' pk=task.id %}" class="btn btn-success link-to-page">
-        Assign me from this task
+      <a href="{% url 'catalog:task-worker-toggle' pk=task.id %}" class="btn btn-sm btn-outline-success">
+        Assign me to this task
       </a>
     {% endif %}
-  </h3>
-  <hr>
-  <ul>
-    <div class="row row-cols-1 row-cols-md-5 g-6 task-grid">
-      {% for assignees in task.assignees.all %}
-        <div class="col">
-        <div class="card h-150 p-3 task-card" style="aspect-ratio: 1 / 1;">
-            <h5>Username: {{ assignees.username }} </h5>
-            <p>Name: {{ assignees.first_name }} {{ assignees.last_name }}</p>
-            <p>Email: {{ assignees.email }}</p>
-            <p>Position: {{ assignees.position }}</p>
-            <p>Last login: {{ assignees.last_login }}</p>
-            <p>Active task: {{ assignees.active_tasks|length }}</p>
-            <p>Completed task: {{ assignees.completed_tasks|length }}</p>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 g-3">
+    {% for assignee in task.assignees.all %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ assignee.username }}</h5>
+            <p class="mb-1 small text-muted">{{ assignee.first_name }} {{ assignee.last_name }}</p>
+            <p class="mb-1 small text-muted">{{ assignee.email }}</p>
+            <p class="mb-2">
+              <span class="badge bg-light text-dark border">{{ assignee.position }}</span>
+            </p>
+            <p class="mb-1 small">Active tasks: {{ assignee.active_tasks|length }}</p>
+            <p class="mb-1 small">Completed tasks: {{ assignee.completed_tasks|length }}</p>
+            <p class="mb-0 small text-muted">Last login: {{ assignee.last_login }}</p>
           </div>
         </div>
-      {% endfor %}
-    </ul>
+      </div>
+    {% empty %}
+      <p class="text-muted">No assignees yet.</p>
+    {% endfor %}
+  </div>
 {% endblock %}

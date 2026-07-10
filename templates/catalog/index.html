@@ -2,9 +2,84 @@
 {% load static %}
 
 {% block content %}
-  <h1>Information</h1>
-  <p>number of tasks: {{ num_tasks }}</p>
-  <p>number of workers: {{ num_workers }}</p>
-  <p>Completed task: {{ complete_tasks }}</p>
-  <p>Active task: {{ active_tasks }}</p>
+  <div class="hero-banner text-center text-white rounded-4 mb-5 py-5">
+    <h1 class="display-5 fw-bold mb-2">Information</h1>
+    <p class="lead mb-0 opacity-75">Full statistics</p>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-6 col-md-3">
+      <div class="card stat-card shadow-sm text-center h-100">
+        <div class="card-body">
+          <i class="fas fa-list-check fa-2x text-primary mb-2"></i>
+          <h2 class="mb-0">{{ num_tasks }}</h2>
+          <p class="text-muted mb-0">Total tasks</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card stat-card shadow-sm text-center h-100">
+        <div class="card-body">
+          <i class="fas fa-users fa-2x text-primary mb-2"></i>
+          <h2 class="mb-0">{{ num_workers }}</h2>
+          <p class="text-muted mb-0">Total workers</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card stat-card shadow-sm text-center h-100">
+        <div class="card-body">
+          <i class="fas fa-circle-check fa-2x text-success mb-2"></i>
+          <h2 class="mb-0">{{ complete_tasks }}</h2>
+          <p class="text-muted mb-0">Completed tasks</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card stat-card shadow-sm text-center h-100">
+        <div class="card-body">
+          <i class="fas fa-hourglass-half fa-2x text-warning mb-2"></i>
+          <h2 class="mb-0">{{ active_tasks }}</h2>
+          <p class="text-muted mb-0">Active tasks</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  .hero-banner {
+    background: linear-gradient(135deg, #212529, #495057);
+  }
+
+  .stat-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    animation: fadeInUp 0.5s ease backwards;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+  }
+
+  .col-md-3:nth-child(1) .stat-card { animation-delay: 0.05s; }
+  .col-md-3:nth-child(2) .stat-card { animation-delay: 0.1s; }
+  .col-md-3:nth-child(3) .stat-card { animation-delay: 0.15s; }
+  .col-md-3:nth-child(4) .stat-card { animation-delay: 0.2s; }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
 {% endblock %}
