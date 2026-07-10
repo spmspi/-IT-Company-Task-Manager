@@ -13,7 +13,7 @@
     <div class="input-group">
       {{ search_forms|crispy }}
       <button class="btn btn-sm btn-outline-secondary" type="submit">
-        <i class="fas fa-search"></i>
+        <i class="fas fa-search "></i>
       </button>
     </div>
   </form>
@@ -53,8 +53,7 @@
                     Update
                   </a>
                   <a href="{% url 'catalog:worker-delete' pk=worker.id %}"
-                     class="btn btn-sm btn-outline-danger"
-                     onclick="return confirm('Delete this worker?')">
+                     class="btn btn-sm btn-outline-danger">
                     Delete
                   </a>
                 </td>
