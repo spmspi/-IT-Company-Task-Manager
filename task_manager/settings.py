@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,15 +20,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$6^528p=+i%l7kx-777&d0%&fcdrq82vv%4d8$my#k496muwwk'
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-$6^528p=+i%l7kx-777&d0%&fcdrq82vv%4d8$my#k496muwwk")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
+
 
 AUTH_USER_MODEL = "catalog.Worker"
-LOGIN_REDIRECT_URL = "catalog:index"
+LOGIN_REDIRECT_URL = "/"
 
 # Application definition
 
