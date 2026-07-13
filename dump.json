@@ -1,0 +1,324 @@
+[
+{
+    "model": "catalog.tasktype",
+    "pk": 1,
+    "fields": {
+        "name": "Bug"
+    }
+},
+{
+    "model": "catalog.tasktype",
+    "pk": 2,
+    "fields": {
+        "name": "New_feature"
+    }
+},
+{
+    "model": "catalog.tasktype",
+    "pk": 3,
+    "fields": {
+        "name": "Breaking_change"
+    }
+},
+{
+    "model": "catalog.tasktype",
+    "pk": 4,
+    "fields": {
+        "name": "Refactoring"
+    }
+},
+{
+    "model": "catalog.tasktype",
+    "pk": 5,
+    "fields": {
+        "name": "QA"
+    }
+},
+{
+    "model": "catalog.worker",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$DYjQrJxK2IuXjs9Ax4g10l$VeAFJlQYfI5TDwEQuWdzRKYCIQfq3gjMIOC32MkajH0=",
+        "last_login": "2026-07-10T05:32:31.527Z",
+        "is_superuser": true,
+        "username": "Arthur",
+        "first_name": "",
+        "last_name": "",
+        "email": "Arthur@email.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-07-04T12:42:11.500Z",
+        "position": null,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "catalog.worker",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$4QTYsNFfmm3HpT8z4eekXW$dWhnw6eGzKhjaBVYQUEbrrk+RTJb/46r/863gfwqMkA=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "TestUser",
+        "first_name": "Test",
+        "last_name": "Test",
+        "email": "123@123.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-07-05T13:28:51.218Z",
+        "position": "DEVELOPER",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "catalog.worker",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$8gTwe4E6RGXm1zHk0Sywyf$yIS9khigzSySJpiTkw3AIUs7mHPNmvnDInRg2HxUvMk=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "TestTwoUser",
+        "first_name": "First",
+        "last_name": "Last",
+        "email": "123test@email.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-07-06T19:05:49.385Z",
+        "position": "QA",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "catalog.worker",
+    "pk": 5,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$zDFjA4tqxNSKCnnwiWEIAl$bjlKXMQELjWGEilV5sb4YS8OhPUnLJPqgaK9kypTbjg=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Test3User",
+        "first_name": "firstOne",
+        "last_name": "LastOne",
+        "email": "CustomEmail@email.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-07-06T19:06:38.577Z",
+        "position": "DevOPS",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "catalog.worker",
+    "pk": 6,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$P83W1ISAwee7PkioOm3P7l$P+dRK8U2hY85HGJt20OCch2llKa7icp/gGbwVmj6YA4=",
+        "last_login": null,
+        "is_superuser": true,
+        "username": "user",
+        "first_name": "",
+        "last_name": "",
+        "email": "user@email.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-07-12T17:24:38.366Z",
+        "position": "DEVELOPER",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "catalog.task",
+    "pk": 4,
+    "fields": {
+        "name": "test 4",
+        "description": "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
+        "deadline": "2026-07-06T19:04:00Z",
+        "is_completed": true,
+        "priority": "MEDIUM",
+        "task_type": 3,
+        "assignees": [
+            1
+        ]
+    }
+},
+{
+    "model": "catalog.task",
+    "pk": 5,
+    "fields": {
+        "name": "Test 5",
+        "description": "123 test test 444",
+        "deadline": "2026-07-16T14:42:00Z",
+        "is_completed": true,
+        "priority": "MEDIUM",
+        "task_type": 2,
+        "assignees": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "catalog.task",
+    "pk": 6,
+    "fields": {
+        "name": "6 test task",
+        "description": "213431421 Test",
+        "deadline": "2026-07-24T15:16:00Z",
+        "is_completed": false,
+        "priority": "MEDIUM",
+        "task_type": 2,
+        "assignees": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "catalog.task",
+    "pk": 8,
+    "fields": {
+        "name": "test task",
+        "description": "324",
+        "deadline": "2026-07-06T04:20:00Z",
+        "is_completed": true,
+        "priority": "MEDIUM",
+        "task_type": 2,
+        "assignees": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "catalog.task",
+    "pk": 9,
+    "fields": {
+        "name": "new task test",
+        "description": "123 test task",
+        "deadline": "2026-07-06T04:11:00Z",
+        "is_completed": true,
+        "priority": "MEDIUM",
+        "task_type": 2,
+        "assignees": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "catalog.task",
+    "pk": 10,
+    "fields": {
+        "name": "test",
+        "description": "1234",
+        "deadline": "2026-07-06T04:59:00Z",
+        "is_completed": true,
+        "priority": "MEDIUM",
+        "task_type": 2,
+        "assignees": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "catalog.task",
+    "pk": 11,
+    "fields": {
+        "name": "test",
+        "description": "23342",
+        "deadline": "2026-07-06T05:35:00Z",
+        "is_completed": false,
+        "priority": "MEDIUM",
+        "task_type": 2,
+        "assignees": [
+            1
+        ]
+    }
+},
+{
+    "model": "catalog.task",
+    "pk": 12,
+    "fields": {
+        "name": "testTask",
+        "description": "123",
+        "deadline": "2026-07-06T19:40:00Z",
+        "is_completed": true,
+        "priority": "MEDIUM",
+        "task_type": 2,
+        "assignees": [
+            1,
+            5
+        ]
+    }
+},
+{
+    "model": "catalog.task",
+    "pk": 13,
+    "fields": {
+        "name": "123 Test task 123",
+        "description": "1235234 TEST",
+        "deadline": "2026-07-07T03:55:00Z",
+        "is_completed": true,
+        "priority": "MEDIUM",
+        "task_type": 3,
+        "assignees": [
+            1,
+            2,
+            4
+        ]
+    }
+},
+{
+    "model": "catalog.task",
+    "pk": 14,
+    "fields": {
+        "name": "123Test",
+        "description": "693 Test TEST",
+        "deadline": "2026-07-07T03:41:00Z",
+        "is_completed": true,
+        "priority": "MEDIUM",
+        "task_type": 3,
+        "assignees": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "catalog.task",
+    "pk": 15,
+    "fields": {
+        "name": "Test deadline task",
+        "description": "123 Test deadline",
+        "deadline": "2026-07-08T03:30:00Z",
+        "is_completed": true,
+        "priority": "MEDIUM",
+        "task_type": 4,
+        "assignees": [
+            1
+        ]
+    }
+},
+{
+    "model": "catalog.task",
+    "pk": 16,
+    "fields": {
+        "name": "test new",
+        "description": "123",
+        "deadline": "2026-07-09T19:50:00Z",
+        "is_completed": false,
+        "priority": "MEDIUM",
+        "task_type": 2,
+        "assignees": [
+            1,
+            2,
+            4,
+            5
+        ]
+    }
+}
+]
