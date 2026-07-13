@@ -29,5 +29,9 @@ https://github.com/spmspi/-IT-Company-Task-Manager.git
 ## Demo
 ![Demo.png](static/assets/img/Demo.png)
 
+## link to deploy project 
+
+https://it-company-task-manager-fbti.onrender.com
+
 
 
